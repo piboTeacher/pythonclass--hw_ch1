@@ -1,0 +1,36 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: 題目1：自我介紹
+      id: '1'
+      uses: classroom-resources/autograding-python-grader@v1
+      with:
+        timeout: 10
+        setup-command: ''
+    - name: 題目2：交換變數
+      id: '2'
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 題目2：交換變數
+        setup-command: ''
+        command: python q2_swap.py
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        1_RESULTS: "${{steps.1.outputs.result}}"
+        2_RESULTS: "${{steps.2.outputs.result}}"
+      with:
+        runners: '1,2'
