@@ -1,0 +1,18 @@
+name: Autograde
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Run Tests
+        run: |
+          python q1_intro.py < test_input_q1.txt > output_q1.txt
+          python q2_swap.py  < test_input_q2.txt > output_q2.txt
+          # 這裡可加入比對輸出結果的邏輯
